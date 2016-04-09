@@ -9,7 +9,7 @@ public class Programm {
 	public static void main(String[] args) throws InterruptedException {
 		sc = new Scanner(System.in);
 		double kontostand = 0;
-		Konto k = new Konto("Seaforest", "Oley", 500000, 500);
+		Konto k = new Konto("Seaforest", "Alex", 500000, 500);
 		boolean goOn = false;
 
 		System.out.println("Kreditlimit: " +k.getKreditlimit());
