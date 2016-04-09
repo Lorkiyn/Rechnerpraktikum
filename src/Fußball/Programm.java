@@ -1,4 +1,4 @@
-package Fu√üball;
+package Fuﬂball;
 
 public class Programm {
 
