@@ -9,11 +9,11 @@ public class Programm {
 	public static void main(String[] args) throws InterruptedException {
 		sc = new Scanner(System.in);
 		double kontostand = 0;
-		Konto k = new Konto("Seaforest", "Alex", 500000, 500);
+		Konto k = new Konto("Seaforest", "Oley", 500000, 500);
 		boolean goOn = false;
 
 		System.out.println("Kreditlimit: " +k.getKreditlimit());
-		System.out.println("ktueller Kontostandt: " + kontostand +" €");
+		System.out.println("ktueller Kontostandt: " + kontostand +" â‚¬");
 
 		try {
 			while (!goOn) {
@@ -39,7 +39,7 @@ public class Programm {
 					goOn = true;
 
 				} else {
-					System.out.println("Ungültige Eingabe!");
+					System.out.println("UngÃ¼ltige Eingabe!");
 				}
 
 			}
@@ -51,10 +51,10 @@ public class Programm {
 			}
 
 			kontostand = k.getKontostand();
-			System.out.println("\n\nNeuer Kontostand: " + kontostand +" €");
+			System.out.println("\n\nNeuer Kontostand: " + kontostand +" â‚¬");
 
 		} catch (Exception e) {
-			System.out.println("Ungültige Eingabe!");
+			System.out.println("UngÃ¼ltige Eingabe!");
 		}
 		
 	}
