@@ -1,6 +1,6 @@
 package konto1;
 
-public class Konto {
+public class Konto { //TEST
 
 	private String nachname;
 	private String vorname;
