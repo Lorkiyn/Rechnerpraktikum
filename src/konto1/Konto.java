@@ -1,6 +1,6 @@
 package konto1;
 
-public class Konto { //TEST
+public class Konto {
 
 	private String nachname;
 	private String vorname;
@@ -46,7 +46,7 @@ public class Konto { //TEST
 		if (((kontostand + kreditlimit) - betrag) >= 0 ){
 			this.kontostand -= betrag;
 		} else {
-			System.out.println("Betrag ist zu groß!");
+			System.out.println("Betrag ist zu groÃŸ!");
 		}
 
 	}
