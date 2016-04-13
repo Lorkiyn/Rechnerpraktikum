@@ -341,7 +341,7 @@ public class Rechner3 extends JFrame {
 		lblNewLabel = new JLabel(" Taschenrechner v1.2 by Darian");
 		lblNewLabel.setEnabled(false);
 		lblNewLabel.setFont(new Font("Tahoma", Font.ITALIC, 9));
-		lblNewLabel.setBounds(236, 166, 138, 8);
+		lblNewLabel.setBounds(268, 167, 138, 11);
 		contentPane.add(lblNewLabel);
 	}
 
