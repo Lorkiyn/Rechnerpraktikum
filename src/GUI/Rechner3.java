@@ -38,6 +38,10 @@ public class Rechner3 extends JFrame {
 	private JButton powX;
 	private double ansResult = 0;
 	private JLabel lblNewLabel;
+	private JButton percent;
+	private JButton button_1;
+	private JButton button_2;
+	private JButton button_3;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -57,7 +61,7 @@ public class Rechner3 extends JFrame {
 		setAlwaysOnTop(true);
 		setTitle("Taschenrechner");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 400, 217);
+		setBounds(100, 100, 430, 217);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -261,8 +265,41 @@ public class Rechner3 extends JFrame {
 			}
 		});
 		ans.setToolTipText("Enth\u00E4lt das Ergebnis der letzen Rechnung");
-		ans.setBounds(176, 135, 50, 30);
+		ans.setBounds(296, 11, 50, 30);
 		contentPane.add(ans);
+		
+		//Prozent
+		percent = new JButton("%");
+		percent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setFields();
+				try {
+					double result = (Double.parseDouble(number2JText.getText().trim().replace(',', '.')) / 100) * Double.parseDouble(number1JText.getText().trim().replace(',', '.'));
+					setResult(result);
+				} catch (NumberFormatException e) {
+					resultJText.setText("Es sind nur nummerische     Werte erlaubt.");
+				}
+			}
+		});
+		percent.setToolTipText("(Zahl1)% von Zahl2");
+		percent.setBounds(176, 134, 50, 30);
+		contentPane.add(percent);
+		
+		//Unused
+		button_1 = new JButton("");
+		button_1.setEnabled(false);
+		button_1.setBounds(296, 52, 50, 30);
+		contentPane.add(button_1);
+		
+		button_2 = new JButton("");
+		button_2.setEnabled(false);
+		button_2.setBounds(356, 52, 50, 30);
+		contentPane.add(button_2);
+		
+		button_3 = new JButton("");
+		button_3.setEnabled(false);
+		button_3.setBounds(356, 11, 50, 30);
+		contentPane.add(button_3);
 
 		//Ergebnis --------------------------------------------------
 		resultJText = new JTextArea();
@@ -286,7 +323,7 @@ public class Rechner3 extends JFrame {
 				resultJText.setText(null);
 			}
 		});
-		newJButton.setBounds(296, 12, 78, 110);
+		newJButton.setBounds(296, 93, 110, 30);
 		contentPane.add(newJButton);
 
 		//Beenden
@@ -298,7 +335,7 @@ public class Rechner3 extends JFrame {
 				System.exit(0);
 			}
 		});
-		exitJButton.setBounds(296, 135, 78, 30);
+		exitJButton.setBounds(296, 135, 110, 30);
 		contentPane.add(exitJButton);
 		
 		lblNewLabel = new JLabel(" Taschenrechner v1.2 by Darian");
