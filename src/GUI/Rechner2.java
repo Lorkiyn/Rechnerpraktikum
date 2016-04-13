@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Rechner extends JFrame {
+public class Rechner2 extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel zahl1Label;
@@ -49,7 +49,7 @@ public class Rechner extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Rechner() {		
+	public Rechner2() {		
 		setTitle("Taschenrechner");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 310, 210);
@@ -71,12 +71,11 @@ public class Rechner extends JFrame {
 		zahl1 = new JTextField();
 		zahl1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//zahl2
 				zahl1True = zahl1.getText();
 				if(zahl1True != null) {
-					disableOperators();
+					//zahl2.setEditable(true);
 				} else {
-					enableOperators();
+					disableOperators();
 				}
 			}
 		});
@@ -85,12 +84,11 @@ public class Rechner extends JFrame {
 		zahl1.setColumns(10);
 
 		zahl2 = new JTextField();
+		zahl2.setEditable(false);
 		zahl2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				zahl2True = zahl2.getText();
-				if(zahl1True == null || zahl2True == null) {
-					disableOperators();
-				} else {
+				if(zahl2True != null) {
 					enableOperators();
 				}
 			}
