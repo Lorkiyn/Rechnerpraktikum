@@ -41,7 +41,8 @@ public class Rechner3 extends JFrame {
 	private JButton percent;
 	private JButton button_1;
 	private JButton button_2;
-	private JButton button_3;
+	private JButton btnM;
+	private double m = 0;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -296,10 +297,20 @@ public class Rechner3 extends JFrame {
 		button_2.setBounds(356, 52, 50, 30);
 		contentPane.add(button_2);
 		
-		button_3 = new JButton("");
-		button_3.setEnabled(false);
-		button_3.setBounds(356, 11, 50, 30);
-		contentPane.add(button_3);
+		btnM = new JButton("M");
+		btnM.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setFields();
+				try {
+					m = Double.parseDouble(resultJText.getText());
+//					setResult(result);
+				} catch (NumberFormatException e) {
+					resultJText.setText("Es sind nur nummerische     Werte erlaubt.");
+				}
+			}
+		});
+		btnM.setBounds(356, 11, 50, 30);
+		contentPane.add(btnM);
 
 		//Ergebnis --------------------------------------------------
 		resultJText = new JTextArea();
