@@ -28,11 +28,11 @@ import java.awt.Font;
 public class Taxi extends JFrame {
 
 	/* Values */
-	private static final double NIGHTTAX = 10; 		//Preiserhöhung bei Nachtfahrt (in %)
+	private static final double NIGHTTAX = 10;		//Preiserhöhung bei Nachtfahrt (in %)
 	private static final double TAXITAX = 7;		//Taxisteuern (in %)
-	private static final double PRICENORMAL = 0.5; 	//Normales Taxi preis pro km
-	private static final double PRICEBIG = 1; 		//Großes Taxi preis pro km
-	private static final double PRICELIMO = 2; 		//Stretchlimo preis pro km
+	private static final double PRICENORMAL = 0.5;	//Normales Taxi preis pro km
+	private static final double PRICEBIG = 1;		//Großes Taxi preis pro km
+	private static final double PRICELIMO = 2;		//Stretchlimo preis pro km
 	private static final double BARPRICE = 15;		//Barpreis pro Person
 	private static final double CHILDSEAT = 1;		//Aufpreis für Kindersitz
 	private static final String MONEY = "€";		//Währung
