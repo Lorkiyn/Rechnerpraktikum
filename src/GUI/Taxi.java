@@ -28,7 +28,7 @@ import java.awt.Font;
 public class Taxi extends JFrame {
 
 	/* Values */
-	private static final double NIGHTTAX = 10;		//Preiserhöhung bei Nachtfahrt (in %)
+	private static final double NIGHTTAX = 110;		//Preiserhöhung bei Nachtfahrt (in %)
 	private static final double TAXITAX = 7;		//Taxisteuern (in %)
 	private static final double PRICENORMAL = 0.5;	//Normales Taxi preis pro km
 	private static final double PRICEBIG = 1;		//Großes Taxi preis pro km
@@ -144,15 +144,15 @@ public class Taxi extends JFrame {
 		panelInput.add(comboBoxType);
 
 		radioNight = new JCheckBox("Nachtfahrt (Zuschlag " +NIGHTTAX +" %)");
-		radioNight.setBounds(20, 70, 190, 23);
+		radioNight.setBounds(20, 70, 210, 23);
 		panelInput.add(radioNight);
 
 		radioChild = new JCheckBox("Kindersitz (Zuschlag " +CHILDSEAT +" " +MONEY +")");
-		radioChild.setBounds(20, 96, 178, 23);
+		radioChild.setBounds(20, 96, 180, 23);
 		panelInput.add(radioChild);
 
 		radioBar = new JCheckBox("Bar (Zuschlag " +BARPRICE +" " +MONEY +")");
-		radioBar.setBounds(20, 122, 178, 23);
+		radioBar.setBounds(20, 122, 156, 23);
 		panelInput.add(radioBar);
 		
 		spinnerPeoples = new JSpinner();
@@ -284,7 +284,7 @@ public class Taxi extends JFrame {
 		double brutto = 3.90;
 		double tax = 0;
 		try {
-			km = Double.parseDouble(textFieldDistance.getText());
+			km = Double.parseDouble(textFieldDistance.getText().trim().replace(',', '.'));
 			if (radioNight.isSelected()) km = (km / 100) * NIGHTTAX;
 			if (comboBoxType.getSelectedIndex() == 0) taxiPay = km * PRICENORMAL;
 			if (comboBoxType.getSelectedIndex() == 1) taxiPay = km * PRICEBIG;
