@@ -7,15 +7,20 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.awt.event.ActionEvent;
 
 public class Rechner3 extends JFrame {
@@ -26,7 +31,7 @@ public class Rechner3 extends JFrame {
 	private JTextField number1JText;
 	private JTextField number2JText;
 	private JButton add;
-	private JTextArea resultJText;
+	private JTextArea resultJArea;
 	private JButton newJButton;
 	private JButton exitJButton;
 	private JButton mult;
@@ -40,9 +45,10 @@ public class Rechner3 extends JFrame {
 	private JLabel lblNewLabel;
 	private JButton percent;
 	private JButton button_1;
-	private JButton button_2;
-	private JButton btnM;
+	private JButton btnMSave;
+	private JButton btnMPrint;
 	private double m = 0;
+	private boolean dot = false;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -83,13 +89,35 @@ public class Rechner3 extends JFrame {
 		//Zahl 1 ---------------------------------------------------
 		number1JText = new JTextField();
 		number1JText.addKeyListener(new KeyListener() {
-		    public void keyPressed(KeyEvent e) {
-		        if(e.getKeyCode() == 10) {
-		        	number2JText.requestFocus();
-		        }
-		    }
-		    public void keyReleased(KeyEvent e) {}
-		    public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+				if (((caracter < '0') || (caracter > '9')) && (caracter != '\b') && (caracter != '.') && (caracter != ',')) {
+					e.consume();
+				
+				}
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+			}
+		});
+
+		number1JText.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == 10) {
+					number2JText.requestFocus();
+				}
+			}
+			public void keyReleased(KeyEvent e) {}
+			public void keyTyped(KeyEvent e) {}
 		});
 		number1JText.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {}
@@ -112,6 +140,28 @@ public class Rechner3 extends JFrame {
 
 		//Zahl2 ----------------------------------------------------
 		number2JText = new JTextField();
+		number2JText.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+				if (((caracter < '0') || (caracter > '9')) && (caracter != '\b') && (caracter != '.') && (caracter != ',')) {
+					e.consume();
+				
+				}
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+			}
+		});
+
 		number2JText.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {}
 			public void mouseEntered(MouseEvent arg0) {
@@ -137,11 +187,9 @@ public class Rechner3 extends JFrame {
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFields();
-				try {
+				if (checkInput()) {
 					double result = Double.parseDouble(number1JText.getText().trim().replace(',', '.')) + Double.parseDouble(number2JText.getText().trim().replace(',', '.'));
 					setResult(result);
-				} catch (NumberFormatException e) {
-					resultJText.setText("Es sind nur nummerische     Werte erlaubt.");
 				}
 			}
 		});
@@ -154,11 +202,9 @@ public class Rechner3 extends JFrame {
 		sub.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFields();
-				try {
+				if (checkInput()) {
 					double result = Double.parseDouble(number1JText.getText().trim().replace(',', '.')) - Double.parseDouble(number2JText.getText().trim().replace(',', '.'));
 					setResult(result);
-				} catch (NumberFormatException e) {
-					resultJText.setText("Es sind nur nummerische     Werte erlaubt.");
 				}
 			}
 		});
@@ -171,11 +217,9 @@ public class Rechner3 extends JFrame {
 		mult.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFields();
-				try {
+				if (checkInput()) {
 					double result = Double.parseDouble(number1JText.getText().trim().replace(',', '.')) * Double.parseDouble(number2JText.getText().trim().replace(',', '.'));
 					setResult(result);
-				} catch (NumberFormatException e) {
-					resultJText.setText("Es sind nur nummerische     Werte erlaubt.");
 				}
 			}
 		});
@@ -188,11 +232,10 @@ public class Rechner3 extends JFrame {
 		div.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFields();
-				try {
-					double result = Double.parseDouble(number1JText.getText().trim().replace(',', '.')) / Double.parseDouble(number2JText.getText().trim().replace(',', '.'));
+				if (checkInput()) {
+					double result = Double.parseDouble(number1JText.getText().trim().replace(',', '.'))
+							/ Double.parseDouble(number2JText.getText().trim().replace(',', '.'));
 					setResult(result);
-				} catch (NumberFormatException e) {
-					resultJText.setText("Es sind nur nummerische     Werte erlaubt.");
 				}
 			}
 		});
@@ -205,12 +248,10 @@ public class Rechner3 extends JFrame {
 		sqrt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFields();
-				try {
+				if (checkInput()) {
 					double result = Math.sqrt(Double.parseDouble(number1JText.getText().trim().replace(',', '.')));
 					number2JText.setText("0");
 					setResult(result);
-				} catch (NumberFormatException e) {
-					resultJText.setText("Es sind nur nummerische     Werte erlaubt.");
 				}
 			}
 		});
@@ -223,11 +264,10 @@ public class Rechner3 extends JFrame {
 		pow2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFields();
-				try {
-					double result = Math.pow(Double.parseDouble(number1JText.getText().trim().replace(',', '.')), 2);
+				if (checkInput()) {
+					double result = Math.pow(Double.parseDouble(number1JText.getText().trim().replace(',', '.')),
+							2);
 					setResult(result);
-				} catch (NumberFormatException e) {
-					resultJText.setText("Es sind nur nummerische     Werte erlaubt.");
 				}
 			}
 		});
@@ -239,11 +279,9 @@ public class Rechner3 extends JFrame {
 		powX.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFields();
-				try {
+				if (checkInput()) {
 					double result = Math.pow(Double.parseDouble(number1JText.getText().trim().replace(',', '.')), Double.parseDouble(number2JText.getText().trim().replace(',', '.')));
 					setResult(result);
-				} catch (NumberFormatException e) {
-					resultJText.setText("Es sind nur nummerische     Werte erlaubt.");
 				}
 			}
 		});
@@ -268,60 +306,74 @@ public class Rechner3 extends JFrame {
 		ans.setToolTipText("Enth\u00E4lt das Ergebnis der letzen Rechnung");
 		ans.setBounds(296, 11, 50, 30);
 		contentPane.add(ans);
-		
+
 		//Prozent
 		percent = new JButton("%");
 		percent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFields();
-				try {
+				if (checkInput()) {
 					double result = (Double.parseDouble(number2JText.getText().trim().replace(',', '.')) / 100) * Double.parseDouble(number1JText.getText().trim().replace(',', '.'));
 					setResult(result);
-				} catch (NumberFormatException e) {
-					resultJText.setText("Es sind nur nummerische     Werte erlaubt.");
 				}
 			}
 		});
 		percent.setToolTipText("(Zahl1)% von Zahl2");
 		percent.setBounds(176, 134, 50, 30);
 		contentPane.add(percent);
-		
+
 		//Unused
 		button_1 = new JButton("");
 		button_1.setEnabled(false);
 		button_1.setBounds(296, 52, 50, 30);
 		contentPane.add(button_1);
-		
-		button_2 = new JButton("");
-		button_2.setEnabled(false);
-		button_2.setBounds(356, 52, 50, 30);
-		contentPane.add(button_2);
-		
-		btnM = new JButton("M");
-		btnM.addActionListener(new ActionListener() {
+
+		btnMSave = new JButton("M=");
+		btnMSave.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnMSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFields();
 				try {
-					m = Double.parseDouble(resultJText.getText());
-//					setResult(result);
+					m = Double.parseDouble(resultJArea.getText());
 				} catch (NumberFormatException e) {
-					resultJText.setText("Es sind nur nummerische     Werte erlaubt.");
+					m = 0;
 				}
+
 			}
 		});
-		btnM.setBounds(356, 11, 50, 30);
-		contentPane.add(btnM);
+		btnMSave.setToolTipText("Speichert einen Wert in M");
+		btnMSave.setBounds(356, 52, 50, 30);
+		contentPane.add(btnMSave);
+
+		btnMPrint = new JButton("M");
+		btnMPrint.setToolTipText("Gibt den gespeicherten Wert in Zahl 1 ein");
+		btnMPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setFields();
+
+				if(m - (int)m == 0) {
+					number1JText.setText(String.valueOf((int)m));
+
+				} else {
+					number1JText.setText(String.valueOf(m));
+				}
+
+			}
+		});
+		btnMPrint.setBounds(356, 11, 50, 30);
+		contentPane.add(btnMPrint);
 
 		//Ergebnis --------------------------------------------------
-		resultJText = new JTextArea();
-		resultJText.setToolTipText("Ergebnisfeld");
-		resultJText.setWrapStyleWord(true);
-		resultJText.setLineWrap(true);
-		resultJText.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		resultJText.setEditable(false);
-		resultJText.setBounds(10, 91, 156, 72);
-		contentPane.add(resultJText);
-		resultJText.setColumns(10);
+		resultJArea = new JTextArea();
+		resultJArea.setText("0");
+		resultJArea.setToolTipText("Ergebnisfeld");
+		resultJArea.setWrapStyleWord(true);
+		resultJArea.setLineWrap(true);
+		resultJArea.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		resultJArea.setEditable(false);
+		resultJArea.setBounds(10, 91, 156, 72);
+		contentPane.add(resultJArea);
+		resultJArea.setColumns(10);
 
 		//Neu
 		newJButton = new JButton("CE");
@@ -331,7 +383,7 @@ public class Rechner3 extends JFrame {
 				number1JText.requestFocus();
 				number1JText.setText(null);
 				number2JText.setText(null);
-				resultJText.setText(null);
+				resultJArea.setText(null);
 			}
 		});
 		newJButton.setBounds(296, 93, 110, 30);
@@ -348,7 +400,7 @@ public class Rechner3 extends JFrame {
 		});
 		exitJButton.setBounds(296, 135, 110, 30);
 		contentPane.add(exitJButton);
-		
+
 		lblNewLabel = new JLabel(" Taschenrechner v1.2 by Darian");
 		lblNewLabel.setEnabled(false);
 		lblNewLabel.setFont(new Font("Tahoma", Font.ITALIC, 9));
@@ -373,9 +425,21 @@ public class Rechner3 extends JFrame {
 		ansResult = number;
 
 		if(number - (int)number == 0) {
-			resultJText.setText(resultInt);
+			resultJArea.setText(resultInt);
 		} else {
-			resultJText.setText(resultDouble);
+			resultJArea.setText(resultDouble);
 		}
+	}
+
+	public boolean checkInput() {
+		try {
+			Double.parseDouble(number1JText.getText());
+			Double.parseDouble(number2JText.getText());
+			return true;
+
+		} catch(NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Es sind nur nummerische Werte erlaubt!", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+		}
+		return false;
 	}
 }
