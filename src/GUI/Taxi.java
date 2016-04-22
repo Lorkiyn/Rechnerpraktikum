@@ -143,7 +143,7 @@ public class Taxi extends JFrame {
 		comboBoxType.setBounds(219, 20, 135, 20);
 		panelInput.add(comboBoxType);
 
-		radioNight = new JCheckBox("Nachtfahrt (Zuschlag " +NIGHTTAX +" %)");
+		radioNight = new JCheckBox("Nachtfahrt (Zuschlag " +(NIGHTTAX-100) +" %)");
 		radioNight.setBounds(20, 70, 210, 23);
 		panelInput.add(radioNight);
 
