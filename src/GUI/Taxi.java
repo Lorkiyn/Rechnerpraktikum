@@ -104,7 +104,7 @@ public class Taxi extends JFrame {
 		lblType.setBounds(10, 20, 190, 20);
 		panelInput.add(lblType);
 
-		lblDistance = new JLabel("Entfehrnung");
+		lblDistance = new JLabel("Entfernung");
 		lblDistance.setBounds(10, 45, 190, 20);
 		panelInput.add(lblDistance);
 
@@ -262,7 +262,7 @@ public class Taxi extends JFrame {
 		contentPane.add(btnNew);
 		
 		setAlwaysOnTop(false);
-		checkBoxInFont = new JCheckBox("Im Fordergrund");
+		checkBoxInFont = new JCheckBox("Im Vordergrund");
 		checkBoxInFont.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (checkBoxInFont.isSelected()) setAlwaysOnTop(true);
@@ -271,7 +271,7 @@ public class Taxi extends JFrame {
 			}
 			
 		});
-		checkBoxInFont.setBounds(231, 288, 112, 16);
+		checkBoxInFont.setBounds(231, 288, 139, 16);
 		contentPane.add(checkBoxInFont);
 
 	}
@@ -309,7 +309,7 @@ public class Taxi extends JFrame {
 			textFieldOutBrutto.setText(String.valueOf(brutto));
 			
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(this, "Bitte geben Sie eine Entfehrnung an.   ", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Bitte geben Sie eine Entfernung an.   ", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
