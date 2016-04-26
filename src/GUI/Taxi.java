@@ -1,42 +1,51 @@
 package GUI;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JComboBox;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
-import java.awt.Color;
-import javax.swing.JTextField;
-import javax.swing.JCheckBox;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
-import javax.swing.JSpinner.DefaultEditor;
-import javax.swing.SpinnerListModel;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
-import java.awt.Font;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class Taxi extends JFrame {
 
 	/* Values */
-	private static final double NIGHTTAX = 110;		//Preiserhöhung bei Nachtfahrt (in %)
+	private static final double NIGHTTAX = 1.1;		//Preiserhöhung bei Nachtfahrt
 	private static final double TAXITAX = 7;		//Taxisteuern (in %)
-	private static final double PRICENORMAL = 0.5;	//Normales Taxi preis pro km
-	private static final double PRICEBIG = 1;		//Großes Taxi preis pro km
-	private static final double PRICELIMO = 2;		//Stretchlimo preis pro km
+	private static final double NORMALTAXI = 0.5;	//Km Preis für normales Taxi
+	private static final double BIGTAXI = 1.0;		//Km Preis für großes Taxi
+	private static final double STRECHLIMO = 2.0;	//Km Preis für Strechlimo
 	private static final double BARPRICE = 15;		//Barpreis pro Person
 	private static final double CHILDSEAT = 1;		//Aufpreis für Kindersitz
+	private static final double STARTPARRA = 3.90;		//Aufpreis für Kindersitz
 	private static final String MONEY = "€";		//Währung
-	
+	private static final String TYPE = "km";		//Währung
+	private static double priceKm = 0.0;	//Normales Taxi preis pro km
+	private static String date = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(Calendar.getInstance().getTime()); //Datum
+
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JComboBox<Object> comboBoxType;
@@ -56,7 +65,6 @@ public class Taxi extends JFrame {
 	private JSeparator separator;
 	private JLabel lblBrutto;
 	private JTextField textFieldOutBrutto;
-	private JButton btnCalculate;
 	private JButton btnPrint;
 	private JButton btnNew;
 	private JSpinner spinnerPeoples;
@@ -113,7 +121,31 @@ public class Taxi extends JFrame {
 		panelInput.add(lblPeople);
 
 		textFieldDistance = new JTextField();
+		textFieldDistance.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				calc();				
+			
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				
+				calc();
+				
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				calc();
+				
+			}
+			
+		});
+		
 		textFieldDistance.addKeyListener(new KeyListener() {
+			
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char caracter = e.getKeyChar();
@@ -140,28 +172,72 @@ public class Taxi extends JFrame {
 
 		String comboBoxList[] = {"Normales Taxi", "Großraum Taxi", "Strechlimousine"};
 		comboBoxType = new JComboBox<Object>(comboBoxList);
+		comboBoxType.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				calc();
+				
+			}
+			
+		});
 		comboBoxType.setBounds(219, 20, 135, 20);
 		panelInput.add(comboBoxType);
 
-		radioNight = new JCheckBox("Nachtfahrt (Zuschlag " +(NIGHTTAX-100) +" %)");
+		radioNight = new JCheckBox("Nachtfahrt (Zuschlag " +(NIGHTTAX) +" %)");
+		radioNight.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				calc();
+				
+			}
+			
+		});
 		radioNight.setBounds(20, 70, 210, 23);
 		panelInput.add(radioNight);
 
 		radioChild = new JCheckBox("Kindersitz (Zuschlag " +CHILDSEAT +" " +MONEY +")");
+		radioChild.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				calc();
+				
+			}
+			
+		});
 		radioChild.setBounds(20, 96, 180, 23);
 		panelInput.add(radioChild);
 
 		radioBar = new JCheckBox("Bar (Zuschlag " +BARPRICE +" " +MONEY +")");
+		radioBar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				calc();
+				
+			}
+			
+		});
 		radioBar.setBounds(20, 122, 156, 23);
 		panelInput.add(radioBar);
-		
+
 		spinnerPeoples = new JSpinner();
 		spinnerPeoples.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		spinnerPeoples.setEditor(new JSpinner.DefaultEditor(spinnerPeoples));
 		spinnerPeoples.setBounds(320, 122, 34, 20);
+		spinnerPeoples.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				calc();
+				
+			}
+		});
 		panelInput.add(spinnerPeoples);
-		
-		lblNewLabel = new JLabel("km");
+
+		lblNewLabel = new JLabel(TYPE);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblNewLabel.setBounds(338, 45, 16, 20);
 		panelInput.add(lblNewLabel);
@@ -173,15 +249,15 @@ public class Taxi extends JFrame {
 		panelCalculation.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Rechnungs\u00FCbersicht", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelCalculation.setBounds(10, 182, 215, 125);
 		contentPane.add(panelCalculation);
-		
+
 		lblMoney1 = new JLabel(MONEY);
 		lblMoney1.setBounds(195, 20, 20, 20);
 		panelCalculation.add(lblMoney1);
-		
+
 		lblMoney2 = new JLabel(MONEY);
 		lblMoney2.setBounds(195, 45, 20, 20);
 		panelCalculation.add(lblMoney2);
-		
+
 		lblMoney3 = new JLabel(MONEY);
 		lblMoney3.setBounds(195, 89, 20, 20);
 		panelCalculation.add(lblMoney3);
@@ -226,26 +302,13 @@ public class Taxi extends JFrame {
 		separator.setBounds(10, 76, 196, 2);
 		panelCalculation.add(separator);
 
-
-		/* Buttons */
-		btnCalculate = new JButton("Berechnen");
-		btnCalculate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				calc();
-				
-			}
-			
-		});
-		btnCalculate.setBounds(235, 190, 135, 23);
-		contentPane.add(btnCalculate);
-
 		btnPrint = new JButton("Drucken");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				calcPrint();
-				
+
 			}
-			
+
 		});
 		btnPrint.setBounds(235, 224, 135, 23);
 		contentPane.add(btnPrint);
@@ -254,22 +317,22 @@ public class Taxi extends JFrame {
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				calcReset();
-				
+
 			}
-			
+
 		});
 		btnNew.setBounds(235, 258, 135, 23);
 		contentPane.add(btnNew);
-		
+
 		setAlwaysOnTop(false);
 		checkBoxInFont = new JCheckBox("Im Vordergrund");
 		checkBoxInFont.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (checkBoxInFont.isSelected()) setAlwaysOnTop(true);
 				if (!checkBoxInFont.isSelected()) setAlwaysOnTop(false);
-				
+
 			}
-			
+
 		});
 		checkBoxInFont.setBounds(231, 288, 139, 16);
 		contentPane.add(checkBoxInFont);
@@ -277,43 +340,71 @@ public class Taxi extends JFrame {
 	}
 
 	private void calc() {
+		if (textFieldDistance.getText().length() < 1) {
+			textFieldOutBrutto.setText("0");
+			textFieldOutTax.setText("0");
+			textFieldOutNetto.setText("0");
+			return;
+		}
+		
 		double km = 0;
 		double bar = 0;
 		double taxiPay = 0;
 		double netto = 0;
-		double brutto = 3.90;
+		double brutto = STARTPARRA;
 		double tax = 0;
 		try {
 			km = Double.parseDouble(textFieldDistance.getText().trim().replace(',', '.'));
-			if (radioNight.isSelected()) km = (km / 100) * NIGHTTAX;
-			if (comboBoxType.getSelectedIndex() == 0) taxiPay = km * PRICENORMAL;
-			if (comboBoxType.getSelectedIndex() == 1) taxiPay = km * PRICEBIG;
-			if (comboBoxType.getSelectedIndex() == 2) taxiPay = km * PRICELIMO;
-			if (radioChild.isSelected()) brutto += 1;
-			if (radioBar.isSelected()) {
-				for (int i = 0;i < (int)spinnerPeoples.getValue();i++) {
-					bar += 15;
-				}
+			if (radioChild.isSelected()) {
+				brutto += 1;
+			
 			}
 			
+			if (radioBar.isSelected()) {
+				bar = (int)spinnerPeoples.getValue() * BARPRICE;
+			
+			}
+
+			switch (comboBoxType.getSelectedIndex())  {
+				case 1:
+					priceKm = BIGTAXI;
+					break;
+				
+				case 2:
+					priceKm = STRECHLIMO;
+					break;
+				
+				default:
+					priceKm = NORMALTAXI;
+					break;
+					
+			}
+
+			if (radioNight.isSelected()) {
+				priceKm *= NIGHTTAX;
+			
+			}
+
+			taxiPay = km * priceKm;
+
 			brutto += taxiPay + bar;
 			tax = (brutto / 100) * TAXITAX;
 			netto = brutto - tax;
-			
+
 			brutto = Math.round(brutto*100)/100.0;
 			tax = Math.round(tax*100)/100.0;
 			netto = Math.round(netto*100)/100.0;
-			
+
 			textFieldOutTax.setText(String.valueOf(tax));
 			textFieldOutNetto.setText(String.valueOf(netto));
 			textFieldOutBrutto.setText(String.valueOf(brutto));
-			
+
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(this, "Bitte geben Sie eine Entfernung an.   ", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
-	
+
 	private void calcReset() {
 		comboBoxType.setSelectedIndex(0);
 		radioNight.setSelected(false);
@@ -324,12 +415,45 @@ public class Taxi extends JFrame {
 		textFieldOutNetto.setText("0");
 		textFieldOutTax.setText("0");
 		textFieldOutBrutto.setText("0");
-		
+
 	}
-	
+
 	protected void calcPrint() {
-		
-		
+		System.out.println("\n\n"
+				+ "Rechnung Taxi GmbH"
+				+ "\t\t\t\t\t\t\t\t\tDatum: " +date
+				+ "\n\nDienstleistungen:"
+				+ "\n  Anfahrtspauschale: " +STARTPARRA +MONEY
+				+ "\n  Entfernung: " +textFieldDistance.getText() +TYPE
+				+ "\n  Nachtzuschlag: " +NIGHTTAX
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ ""
+				+ "");
+
+
 	}
-	
+
 }
