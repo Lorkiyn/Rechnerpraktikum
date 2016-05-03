@@ -46,6 +46,11 @@ public abstract class Konto {
 		}
 
 	}
+	
+	public String getName() {
+		return inhaber.getVorname() + ", " +inhaber.getNachname();
+		
+	}
 
 	@Override
 	public String toString() {
