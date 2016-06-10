@@ -10,7 +10,7 @@ public class Bug9 {
 	@SuppressWarnings("all")
 	public static void main(String[] args) {
 
-		if (2 == 3)
+		if (2 == 3)																																									;																																			
 		{
 			System.out.println("Mathematik ist kaputt");
 		}
