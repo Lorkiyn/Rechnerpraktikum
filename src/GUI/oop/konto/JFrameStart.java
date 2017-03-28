@@ -18,14 +18,12 @@ import konto4.Sparkonto;
 
 public class JFrameStart extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblTitle;
 	private JButton buttonGiro;
 	private JButton buttonSpar;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -39,9 +37,6 @@ public class JFrameStart extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public JFrameStart() {
 		setTitle("Kontoverwaltung");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

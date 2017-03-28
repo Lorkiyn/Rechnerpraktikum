@@ -32,6 +32,7 @@ public class Programm {
 		Gameplay.spielen(spiel);
 		StringBuilder test = Gameplay.spielbericht;
 		System.out.println(spiel);
+		System.out.println(test);
 	}
 
 }

@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Programm {
 
 	private static Scanner sc = new Scanner(System.in);
-	static boolean debug = true;
+	static boolean debug = false;
 
 	public static String readString(String defaultValue) {
 		if (debug) {
@@ -25,6 +25,7 @@ public class Programm {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws InterruptedException {
 		Konto k = null;
 		Person p = null;

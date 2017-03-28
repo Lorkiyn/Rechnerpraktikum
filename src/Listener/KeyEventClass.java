@@ -1,16 +1,17 @@
 package Listener;
 
-import java.awt.BorderLayout; 
-import java.awt.event.KeyEvent; 
-import java.awt.event.KeyListener; 
+import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-
-import javax.swing.JFrame; 
+import javax.swing.JFrame;
 import javax.swing.JTextField; 
 
 public class KeyEventClass extends JFrame implements KeyListener { 
-     
-    public KeyEventClass(){ 
+    
+	private static final long serialVersionUID = 1L;
+
+	public KeyEventClass(){ 
         this.setLayout(new BorderLayout()); 
         JTextField field = new JTextField(); 
         field.addKeyListener(this); 
